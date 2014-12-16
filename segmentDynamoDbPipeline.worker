@@ -1,0 +1,3 @@
+runtime "nodejs"
+exec "segmentDynamoDbPipeline.js"
+dir "node_modules"
