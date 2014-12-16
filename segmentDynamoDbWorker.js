@@ -19,6 +19,6 @@ queue.get_n(options, function(error, messages) {
                 //what is this?
             }
         });
-    })
+    });
 });
 
