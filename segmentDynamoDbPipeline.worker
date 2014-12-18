@@ -4,8 +4,10 @@ stack "node-0.10"
 
 exec "segmentDynamoDbPipeline.js"
 
-# file "package.json"
-# build "npm config set strict-ssl false; npm install --production"
+file "package.json"
+
+build "npm config set strict-ssl false; npm install --production"
+
 # remote
 
-dir "node_modules"
+#dir "node_modules"

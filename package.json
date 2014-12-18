@@ -1,0 +1,9 @@
+{
+  "name": "SegmentDynamoDbPipeline",
+  "description": "An extremely simple worker process for taking Segment.io data via Iron.io and sending to AWS DynamoDB.",
+  "dependencies": {
+    "dynamodb-doc": "1.x.x",
+    "aws-sdk": "2.1.x",
+    "iron_mq": "0.2.x"
+  },
+}

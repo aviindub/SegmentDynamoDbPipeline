@@ -26,6 +26,9 @@ queue.get_n(options, function(error, messages) {
             if (err) {
                 //log error
             }
+            else {
+                message.delete();
+            }
             if (data) {
                 //what is this?
             }
