@@ -8,6 +8,6 @@ file "package.json"
 
 build "npm config set strict-ssl false; npm install --production"
 
-# remote
+remote
 
 #dir "node_modules"
