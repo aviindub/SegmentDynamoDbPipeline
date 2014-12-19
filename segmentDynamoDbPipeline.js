@@ -29,24 +29,34 @@ var messageToItem = function(message) {
     return item;
 }
 
+var dynamoDbPutMessage = function(message) {
+    var params = {
+        "TableName": worker.config.SEGMENT_RAW_DATA_TABLE_NAME,
+        "Item": messageToItem(message)
+    }
+    dd.putItem(params, function(err, data) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            message.delete();
+        }
+        if (data) {
+            //what is this?
+            console.log("got data back from putItem:", data.toString());
+        }
+    });
+}
+
+//debug
+if (worker.params) {
+    dynamoDbPutMessage(worker.params);
+}
+//end debug
+
 var options = {n: 100};
 queue.get_n(options, function(error, messages) {
     messages.forEach(function(message) {
-        params = {
-            "TableName": worker.config.SEGMENT_RAW_DATA_TABLE_NAME,
-            "Item": messageToItem(message)
-        }
-        dd.putItem(params, function(err, data) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                message.delete();
-            }
-            if (data) {
-                //what is this?
-                console.log("got data back from putItem:", data.toString());
-            }
-        });
+        dynamoDbPutMessage(message);
     });
 });
