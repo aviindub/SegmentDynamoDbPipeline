@@ -34,18 +34,15 @@ var dynamoDbPutMessage = function(message) {
         "Item": messageToItem(message)
     }
     dd.putItem(params, function(err, data) {
-        if (data) {
-            //what is this?
+        if (data && Object.keys(data).length > 0) {
             console.log("got data back from putItem:", data);
         }
         if (err) {
             console.log(err);
-            // process.exit();
         }
         else {
             console.log("no error. exiting.");
             message.delete();
-            // process.exit();
         }
     });
 };
