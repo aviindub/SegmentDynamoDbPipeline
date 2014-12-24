@@ -6,8 +6,8 @@ exec "segmentDynamoDbPipeline.js"
 
 file "package.json"
 
+file "iron.json"
+
 build "npm config set strict-ssl false; npm install --production"
 
 remote
-
-#dir "node_modules"
