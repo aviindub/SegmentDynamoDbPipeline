@@ -34,9 +34,9 @@ var dynamoDbPutMessage = function(message) {
         }
         if (error) {
             console.log("error from putItem:", error);
-            queue.msq_release(message.id, {}, function(error, response) {
+            queue.msg_release(message.id, {}, function(error, response) {
                 if (error) {
-                    console.log("error deleting message. message id:", message.id, "error:", error);
+                    console.log("error releasing message. message id:", message.id, "error:", error);
                 }
             });
         }
@@ -44,7 +44,7 @@ var dynamoDbPutMessage = function(message) {
             console.log("dynamodb putitem successful. message ID:", params.Item.os_id.S);
             queue.del(message.id, function(error, response) {
                 if (error) {
-                    console.log("error releasing message. message id:", message.id, "error:", error);
+                    console.log("error deleting message. message id:", message.id, "error:", error);
                 }
             });
         }
