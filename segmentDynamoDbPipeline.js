@@ -16,7 +16,7 @@ var dd = new AWS.DynamoDB();
 var messageToItem = function(message) {
     message_parsed = JSON.parse(message);
     var item = {
-        "os_id": {"S": Guid.raw()},
+        worker.config.DYNAMODB_GUID_KEY_NAME: {"S": Guid.raw()},
         "timestamp": {"N": new Date(message_parsed.timestamp).valueOf().toString()},
         "message": {"S": message}
     };
