@@ -19,3 +19,4 @@ queue a task via cli with optional parameters
 ```
 iron_worker queue SegmentDynamoDbPipeline --priority 1 --cluster mem1 --timeout 3600
 ```
+NOTE: you must create iron.json and config.json files to go with this.
