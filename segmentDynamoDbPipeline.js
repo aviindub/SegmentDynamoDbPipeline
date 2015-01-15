@@ -1,7 +1,6 @@
 var iron_mq = require('iron_mq');
 var worker = require('node_helper');
 var AWS = require("aws-sdk");
-var Guid = require("guid");
 
 var imq = new iron_mq.Client();
 var queue = imq.queue(worker.config.IRON_MQ_QUEUE_NAME); // "segment"
@@ -16,9 +15,9 @@ var dd = new AWS.DynamoDB();
 var messageToItem = function(message) {
     message_parsed = JSON.parse(message);
     var item = {
-        "os_id": {"S": Guid.raw()},
-        "timestamp": {"N": new Date(message_parsed.timestamp).valueOf().toString()},
-        "message": {"S": message}
+        "os_id": { "S": message_parsed.messageId },
+        "timestamp": { "N": new Date(message_parsed.timestamp).valueOf().toString() },
+        "message": { "S": message }
     };
     return item;
 };
