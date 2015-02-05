@@ -2,8 +2,12 @@ var iron_mq = require('iron_mq');
 var worker = require('node_helper');
 var AWS = require("aws-sdk");
 
-var imq = new iron_mq.Client();
-var queue = imq.queue(worker.config.IRON_MQ_QUEUE_NAME); // "segment"
+var imq = new iron_mq.Client({
+    token: worker.config.IRON_MQ_TOKEN,
+    project_id: worker.config.IRON_MQ_PROJECT_ID,
+    queue_name: worker.config.IRON_MQ_QUEUE_NAME
+});
+var queue = imq.queue(worker.config.IRON_MQ_QUEUE_NAME);
 
 AWS.config.update({
     accessKeyId: worker.config.AWS_ACCESS_KEY_ID,
@@ -61,4 +65,4 @@ queue.get_n(options, function(error, messages) {
            dynamoDbPutMessage(message);
         });
     }
-});
+});    
