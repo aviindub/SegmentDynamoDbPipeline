@@ -5,7 +5,7 @@ var AWS = require("aws-sdk");
 var imq = new iron_mq.Client({
     token: worker.config.IRON_MQ_TOKEN,
     project_id: worker.config.IRON_MQ_PROJECT_ID,
-    queue_name: worker.config.IRON_MQ_QUEUE_NAME
+    host: worker.config.IRON_MQ_HOST
 });
 var queue = imq.queue(worker.config.IRON_MQ_QUEUE_NAME);
 
@@ -37,7 +37,7 @@ var dynamoDbPutMessage = function(message) {
         }
         if (error) {
             console.log("error from putItem:", error);
-            queue.msg_release(message.id, {}, function(error, response) {
+            queue.msg_release(message.id, { reservation_id: message.reservation_id }, function(error, response) {
                 if (error) {
                     console.log("error releasing message. message id:", message.id, "error:", error);
                 }
@@ -45,7 +45,7 @@ var dynamoDbPutMessage = function(message) {
         }
         else {
             console.log("dynamodb putitem successful. message ID:", params.Item.os_id.S);
-            queue.del(message.id, function(error, response) {
+            queue.del(message.id, { reservation_id: message.reservation_id }, function(error, response) {
                 if (error) {
                     console.log("error deleting message. message id:", message.id, "error:", error);
                 }
