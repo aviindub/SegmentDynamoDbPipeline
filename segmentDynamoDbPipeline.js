@@ -49,20 +49,39 @@ var dynamoDbPutMessage = function(message) {
                 if (error) {
                     console.log("error deleting message. message id:", message.id, "error:", error);
                 }
+                if (response) {
+                    console.log("message deleted. message id:", message.id, "response:", response);
+                }
             });
         }
     });
 };
 
-var options = {n: 100};
-queue.get_n(options, function(error, messages) {
+var getAndPut = function(i) {
+    var options = {n: 100, timeout: 180};
+    queue.get_n(options, function(error, messages) {
+        if (error) {
+            console.log("error getting messages from queue:", error);
+        }
+        if (messages) {
+            console.log("successfully got", messages.length.toString(), "messages.");
+            messages.forEach(function(message) {
+               dynamoDbPutMessage(message);
+            });
+        }
+        if (i > 0) {
+            getAndPut(i - 1);
+        }
+    });
+}
+
+queue.info(function(error, results) {
     if (error) {
-        console.log("error getting messages from queue:", error);
+        console.log("error getting queue info:", error);
     }
-    if (messages) {
-        console.log("successfully got", messages.length.toString(), "messages.");
-        messages.forEach(function(message) {
-           dynamoDbPutMessage(message);
-        });
+    else if (results) {
+        var i = Math.ceil(results.size / 100) + 1;
+        console.log('queue contains', results.size, 'messages. performing', i, 'iterations.');
+        getAndPut(i);
     }
-});    
+});
