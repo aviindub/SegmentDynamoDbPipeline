@@ -49,9 +49,6 @@ var dynamoDbPutMessage = function(message) {
                 if (error) {
                     console.log("error deleting message. message id:", message.id, "error:", error);
                 }
-                if (response) {
-                    console.log("message deleted. message id:", message.id, "response:", response);
-                }
             });
         }
     });
@@ -80,7 +77,7 @@ queue.info(function(error, results) {
         console.log("error getting queue info:", error);
     }
     else if (results) {
-        var i = Math.ceil(results.size / 100) + 1;
+        var i = Math.ceil(results.size / 100);
         console.log('queue contains', results.size, 'messages. performing', i, 'iterations.');
         getAndPut(i);
     }
