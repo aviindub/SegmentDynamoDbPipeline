@@ -18,11 +18,11 @@ var dd = new AWS.DynamoDB();
 
 var messageToItem = function(message) {
     message_parsed = JSON.parse(message);
-    var timestamp = new Date(message_parsed.timestamp).valueOf().toString();
+    var timestamp = Math.floor(new Date(message_parsed.timestamp).valueOf() / 1000).toString();
     var item = {
         "os_id": { "S": message_parsed.messageId },
         "timestamp": { "N": timestamp },
-        "ts_prefix" : { "N": timestamp.substring(0, 4) },
+        "ts_prefix" : { "N": timestamp.substring(0, 6) },
         "message": { "S": message }
     };
     return item;
