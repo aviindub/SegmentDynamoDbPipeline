@@ -18,9 +18,11 @@ var dd = new AWS.DynamoDB();
 
 var messageToItem = function(message) {
     message_parsed = JSON.parse(message);
+    var timestamp = new Date(message_parsed.timestamp).valueOf().toString();
     var item = {
         "os_id": { "S": message_parsed.messageId },
-        "timestamp": { "N": new Date(message_parsed.timestamp).valueOf().toString() },
+        "timestamp": { "N": timestamp },
+        "ts_prefix" : { "N": timestamp.substring(0, 4) },
         "message": { "S": message }
     };
     return item;
@@ -66,7 +68,7 @@ var getAndPut = function(i) {
                dynamoDbPutMessage(message);
             });
         }
-        if (i > 0) {
+        if (i - 1 > 0) {
             getAndPut(i - 1);
         }
     });
@@ -78,6 +80,7 @@ queue.info(function(error, results) {
     }
     else if (results) {
         var i = Math.ceil(results.size / 100);
+        if (results.size % 100 > 90) { i++; }
         console.log('queue contains', results.size, 'messages. performing', i, 'iterations.');
         getAndPut(i);
     }
