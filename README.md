@@ -15,6 +15,16 @@ to upload with a config file, retries, and maximum concurrency limit
 iron_worker upload SegmentDynamoDbPipeline --worker-config config.json --retries 3 --max-concurrency 10
 ```
 
+to upload with a concurrency limit and config to the staging environment:
+```
+iron_worker upload SegmentDynamoDbPipeline --worker-config config_staging.json --max-concurrency 10 --env staging
+```
+
+to upload with a concurrency limit and config to the production environment:
+```
+iron_worker upload SegmentDynamoDbPipeline --worker-config config_production.json --max-concurrency 10 --env production
+```
+
 queue a task via cli with optional parameters
 ```
 iron_worker queue SegmentDynamoDbPipeline --priority 1 --cluster mem1 --timeout 3600
