@@ -57,6 +57,7 @@ var dynamoDbPutMessage = function(message) {
 };
 
 var getAndPut = function(i) {
+    if (i <= 0) { return; }
     var options = {n: 100, timeout: 180};
     queue.get_n(options, function(error, messages) {
         if (error) {
@@ -68,9 +69,7 @@ var getAndPut = function(i) {
                dynamoDbPutMessage(message);
             });
         }
-        if (i - 1 > 0) {
-            getAndPut(i - 1);
-        }
+        getAndPut(i - 1);
     });
 }
 
